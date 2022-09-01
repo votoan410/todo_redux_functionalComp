@@ -4,16 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteTask, getTasks } from "../actions/todoActions";
 
 const TaskList = () => {
-  const [state, setState] = useState();
-  const endpoint = "/todos";
-
   const tasks = useSelector((state) => state.tasks);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("redux: ", tasks);
+    console.log("redux state: ", tasks);
     dispatch(getTasks());
-  }, [dispatch]);
+  }, []);
 
   // const getTask = () => {
   //   http.get(endpoint).then((res) => {
@@ -41,7 +38,12 @@ const TaskList = () => {
   // if (state?.data) {
   //   console.log(state.data);
   // }
-
+  const FOO = () => {
+    return 5;
+  };
+  // action is an object = {type , payload}
+  // reducer function => new state depending on the action type and previous state
+  // dispatch take in the action object and send it to the reducer to update the store state
   const deleteClick = (id) => {
     if (id) {
       const trimmedId = id?.substring(11);
@@ -50,7 +52,8 @@ const TaskList = () => {
     }
   };
 
-  const styleLine = { textDecoration: "line-through" };
+  const styleLined = { textDecoration: "line-through", cursor: "grab" };
+  const styleWOLined = { cursor: "grab" };
 
   return tasks?.map((task) => {
     return (
@@ -61,9 +64,10 @@ const TaskList = () => {
         >
           <div
             className={DomSelectors.taskSection.title}
-            style={task.completed ? styleLine : null}
+            style={task.completed ? styleLined : styleWOLined}
             id={`div-${task.id}`}
           >
+            {/* substring(12) */}
             <h3
               id={`title-click-${task.id}`}
               // style="cursor:grab"
@@ -76,6 +80,7 @@ const TaskList = () => {
             className={DomSelectors.taskSection.edit}
             // style={task.completed ? "display: none" : null}
           >
+            {/* substring(9) for edit */}
             <svg
               id={`btn-edit-${task.id}`}
               focusable="false"

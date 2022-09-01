@@ -11,13 +11,13 @@ import App from "./App";
 // Ecmascript:  Syntax standard : ES5 ES6 ES7..
 // Javascript: Ecmascript + WebAPI(DOM, fetch ...)
 // Node: Ecmascript + NodeAPI(require, fs, crypto, http)
+
+// middleware allows us to write in different patterns
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <App />
   </Provider>
 );

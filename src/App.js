@@ -8,9 +8,9 @@ import { getTasks } from "./actions/todoActions";
 const App = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getTasks());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getTasks());
+  // }, [ ]);
 
   return (
     <>

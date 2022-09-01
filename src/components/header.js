@@ -1,11 +1,23 @@
-import React, { useState } from "react";
-import http from "../services/api";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteTask, getTasks, createTask } from "../actions/todoActions";
 
 const Header = () => {
   const [value, setValue] = useState("");
+  const tasks = useSelector((state) => state.tasks);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log("redux state: ", tasks);
+    dispatch(getTasks());
+  }, [dispatch]);
 
   const submit = () => {
     console.log("value inputted: ", value);
+    const submittingValue = {
+      title: value,
+      completed: false,
+    };
   };
 
   return (

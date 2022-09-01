@@ -9,7 +9,13 @@ const url = "http://localhost:3000/todos";
 //   },
 // });
 
-export const fetchTask = () => axios.get(url);
+export const fetchTask = () =>
+  new Promise((res, rej) => {
+    setTimeout(() => {
+      res(axios.get(url));
+    }, 2000);
+  });
+
 export const createTask = (newTask) => axios.post(url, newTask);
 export const editTask = (id, updateTask) =>
   axios.patch(`${url}/${id}`, updateTask);
