@@ -3,16 +3,16 @@ import http from "../services/api";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteTask, getTasks, updateTask } from "../actions/todoActions";
 import Parser from "html-react-parser";
+import EditTask from "./editTask";
 
 const TaskList = () => {
   const [todos, setTodos] = useState([]);
   const [taskName, setTaskName] = useState(null);
-  const [editMode, setEditMode] = useState(false);
+  const [editMode, setEditMode] = useState({ enable: false, id: "" });
   const tasks = useSelector((state) => state.tasks);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("redux state: ", tasks);
     dispatch(getTasks());
   }, []);
 
@@ -56,10 +56,6 @@ const TaskList = () => {
     },
   };
 
-  // if (state?.data) {
-  //   console.log(state.data);
-  // }
-
   // action is an object = {type , payload}
   // reducer function => new state depending on the action type and previous state
   // dispatch take in the action object and send it to the reducer to update the store state
@@ -71,77 +67,32 @@ const TaskList = () => {
     }
   };
 
-  /*
-    const editBox = `<input type="text" id="input__box-edit-${task.id}" 
-                name="create-task" 
-                placeholder="${task.title}"/>`;
-            document.getElementById(`div-${id}`).innerHTML = editBox;  
-  */
-
-  const editClick = (id) => {
-    const editBox = (
-      <input
-        type="text"
-        id="input__box-edit-${id}"
-        name="create-task"
-        onKeyPress={(e) => {
-          if (e.key === "enter") {
-            console.log("updated id and value: ", id, " ", e.target.value);
-            // editSubmit(id, e.target.value);
-          }
-        }}
-      />
-    );
-
-    // document.getElementById(`div-${id}`).innerHTML = editBox;
-  };
-
-  const editSubmit = (id, task) => {
-    // dispatch(updateTask(id, task));
-  };
-
-  const markClick = (taskArg) => {
-    const { id, title, completed } = taskArg;
-    const newTask = {
-      title: title,
-      completed: !completed,
-    };
-    dispatch(updateTask(id, newTask));
-  };
-  const styleLined = { textDecoration: "line-through", cursor: "grab" };
-  const styleWOLined = { cursor: "grab" };
-
   return todos.length > 1 ? (
     todos.map((task) => {
       return (
         <>
-          <section
-            className={DomSelectors.taskSection.taskEntry}
-            //   style={task.completed ? "text-decoration: line-through;" : null}
-          >
-            <div
-              className={DomSelectors.taskSection.title}
-              style={task.completed ? styleLined : styleWOLined}
-              id={`div-${task.id}`}
-            >
-              {/* substring(12) */}
-              {
-                <h3
-                  id={`title-click-${task.id}`}
-                  // style="cursor:grab"
-                  onClick={() => markClick(task)}
-                >
-                  {task.title}
-                </h3>
-              }
-            </div>
+          <section className={DomSelectors.taskSection.taskEntry}>
+            <EditTask
+              title={task.title}
+              completed={task.completed}
+              id={task.id}
+              isEdit={editMode}
+            />
             {!task.completed ? (
               <div
                 className={DomSelectors.taskSection.edit}
                 // style={task.completed ? "display: none" : null}
                 id={`btn-edit-${task.id}`}
                 onClick={(event) => {
-                  editClick(event.target.id.substring(9));
+                  console.log(
+                    "edit clicked: ",
+                    typeof event.target.id.substring(9)
+                  );
+                  // editClick(event.target.id.substring(9));
+                  setEditMode({
+                    enable: !editMode.enable,
+                    id: event.target.id.substring(9),
+                  });
                 }}
               >
                 {/* substring(9) for edit */}
@@ -167,7 +118,7 @@ const TaskList = () => {
                 className={DomSelectors.taskSection.deleteTask}
                 id={`btn-delete-${task.id}`}
                 onClick={(event) => {
-                  deleteClick(event.targetid);
+                  deleteClick(event.target.id);
                 }}
               >
                 <svg
