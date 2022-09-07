@@ -26,7 +26,6 @@ export const createTask = (task) => async (dispatch) => {
 export const updateTask = (id, task) => async (dispatch) => {
   try {
     const { data } = await api.editTask(id, task);
-
     dispatch({ type: TODO_ACTIONS_TYPES.UPDATE_TODO, payload: data });
   } catch (error) {
     console.log(error.message);

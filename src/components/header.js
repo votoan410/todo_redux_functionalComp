@@ -18,6 +18,7 @@ const Header = () => {
       title: value,
       completed: false,
     };
+    dispatch(createTask(submittingValue));
   };
 
   return (
