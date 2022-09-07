@@ -63,6 +63,7 @@ const EditTask = ({ title, completed, id, isEdit }) => {
             type="text"
             id="input__box-edit-${id}"
             name="create-task"
+            placeholder={title}
             onKeyPress={(e) => {
               if (e.key == "Enter") {
                 editSubmit(id, e.target.value, completed);
